@@ -1,7 +1,7 @@
 use std::vec;
 
 use karesansui::vector3::Vector3;
-use sdl2::{gfx::primitives::DrawRenderer, pixels::Color, render::WindowCanvas};
+use sdl2::{gfx::primitives::DrawRenderer, pixels::Color, render::{WindowCanvas, Texture}, rect::Rect};
 
 pub struct Renderer {
     window_width: i32,
@@ -139,5 +139,18 @@ impl Renderer {
         }
 
         self.renderer.filled_polygon(&vx, &vy, color).unwrap();
+    }
+
+    pub fn draw_texture(&mut self, x: i16, y: i16, width: i16, height: i16, angle: f64, texture: &Texture) {
+        let destination_rectangle = Rect::new(
+            (x - (width / 2)) as i32,
+            (y - (height / 2)) as i32,
+            width as u32,
+            height as u32,
+        );
+
+        let degrees = angle * 57.2958;
+
+        self.renderer.copy_ex(texture, None, destination_rectangle, degrees, None, false, false).unwrap();
     }
 }
