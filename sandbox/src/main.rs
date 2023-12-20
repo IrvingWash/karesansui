@@ -1,6 +1,7 @@
 use application::Application;
 
 mod application;
+mod renderer;
 
 fn main() {
     let mut app = Application::new();

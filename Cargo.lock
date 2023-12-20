@@ -23,9 +23,6 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 [[package]]
 name = "karesansui"
 version = "0.1.0"
-dependencies = [
- "sdl2",
-]
 
 [[package]]
 name = "lazy_static"
@@ -42,6 +39,10 @@ checksum = "302d7ab3130588088d277783b1e2d2e10c9e9e4a16dd9050e6ec93fb3e7048f4"
 [[package]]
 name = "sandbox"
 version = "0.1.0"
+dependencies = [
+ "karesansui",
+ "sdl2",
+]
 
 [[package]]
 name = "sdl2"
