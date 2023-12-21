@@ -4,7 +4,7 @@ use sdl2::{
     pixels::Color,
     rect::Rect,
     render::{Texture, WindowCanvas},
-    EventPump, Sdl, TimerSubsystem,
+    EventPump, TimerSubsystem,
 };
 
 pub struct Canvas {

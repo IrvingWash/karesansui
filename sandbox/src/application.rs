@@ -54,20 +54,30 @@ impl Application {
     pub fn render(&mut self) {
         self.canvas.clear_screen(Color::RGB(1, 0, 0));
 
-        self.canvas.draw_filled_circle(100, 100, 100, Color::RGB(0, 0, 180));
+        self.canvas
+            .draw_filled_circle(100, 100, 100, Color::RGB(0, 0, 180));
 
         self.canvas.render_frame();
     }
 
     fn sleep_and_calculate_delta_time(&mut self) -> f64 {
-        let time_to_wait =
-            MILLISECONDS_PER_FRAME.saturating_sub(self.canvas.timer.ticks64().saturating_sub(self.time_previous_frame));
+        let time_to_wait = MILLISECONDS_PER_FRAME.saturating_sub(
+            self.canvas
+                .timer
+                .ticks64()
+                .saturating_sub(self.time_previous_frame),
+        );
 
         if time_to_wait > 0 {
             self.canvas.timer.delay(time_to_wait as u32);
         }
 
-        let delta_time = (self.canvas.timer.ticks64().saturating_sub(self.time_previous_frame)) as f64 / 1000_f64;
+        let delta_time = (self
+            .canvas
+            .timer
+            .ticks64()
+            .saturating_sub(self.time_previous_frame)) as f64
+            / 1000_f64;
 
         self.time_previous_frame = self.canvas.timer.ticks64();
 
