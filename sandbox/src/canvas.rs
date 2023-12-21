@@ -56,6 +56,7 @@ impl Canvas {
 
     pub fn clear_screen(&mut self, color: Color) {
         self.renderer.set_draw_color(color);
+        self.renderer.clear();
     }
 
     pub fn render_frame(&mut self) {

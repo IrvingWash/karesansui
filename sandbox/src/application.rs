@@ -52,7 +52,7 @@ impl Application {
     }
 
     pub fn render(&mut self) {
-        self.canvas.clear_screen(Color::RGB(1, 0, 0));
+        self.canvas.clear_screen(Color::RGB(50, 50, 50));
 
         self.canvas
             .draw_filled_circle(100, 100, 100, Color::RGB(0, 0, 180));
