@@ -1,37 +1,47 @@
-use std::vec;
-
 use karesansui::vector3::Vector3;
-use sdl2::{gfx::primitives::DrawRenderer, pixels::Color, render::{WindowCanvas, Texture}, rect::Rect};
+use sdl2::{
+    gfx::primitives::DrawRenderer,
+    pixels::Color,
+    rect::Rect,
+    render::{Texture, WindowCanvas},
+    EventPump, Sdl, TimerSubsystem,
+};
 
-pub struct Renderer {
+pub struct Canvas {
+    pub timer: TimerSubsystem,
+    pub event_pump: EventPump,
     window_width: i32,
     window_height: i32,
     renderer: WindowCanvas,
 }
 
-impl Renderer {
-    pub fn open_window(&mut self) -> bool {
+impl Canvas {
+    pub fn open_window() -> Self {
         let ctx = sdl2::init().unwrap();
 
         let video_subsystem = ctx.video().unwrap();
 
         let display_mode = video_subsystem.current_display_mode(0).unwrap();
 
-        self.window_width = display_mode.w;
-        self.window_height = display_mode.h;
+        let window_width = display_mode.w;
+        let window_height = display_mode.h;
 
         let window = video_subsystem
             .window(
                 "Sandbox",
-                self.window_width.try_into().unwrap(),
-                self.window_height.try_into().unwrap(),
+                window_width.try_into().unwrap(),
+                window_height.try_into().unwrap(),
             )
             .build()
             .unwrap();
 
-        self.renderer = window.into_canvas().build().unwrap();
-
-        return true;
+        Canvas {
+            renderer: window.into_canvas().build().unwrap(),
+            timer: ctx.timer().unwrap(),
+            event_pump: ctx.event_pump().unwrap(),
+            window_height,
+            window_width,
+        }
     }
 
     pub fn width(&self) -> i32 {
@@ -134,14 +144,22 @@ impl Renderer {
         let mut vy: [i16; 2] = [0, 0];
 
         for (i, vertex) in vertices.iter().enumerate() {
-            vx[i] = (vertex.x as i16);
-            vy[i] = (vertex.y as i16);
+            vx[i] = vertex.x as i16;
+            vy[i] = vertex.y as i16;
         }
 
         self.renderer.filled_polygon(&vx, &vy, color).unwrap();
     }
 
-    pub fn draw_texture(&mut self, x: i16, y: i16, width: i16, height: i16, angle: f64, texture: &Texture) {
+    pub fn draw_texture(
+        &mut self,
+        x: i16,
+        y: i16,
+        width: i16,
+        height: i16,
+        angle: f64,
+        texture: &Texture,
+    ) {
         let destination_rectangle = Rect::new(
             (x - (width / 2)) as i32,
             (y - (height / 2)) as i32,
@@ -151,6 +169,16 @@ impl Renderer {
 
         let degrees = angle * 57.2958;
 
-        self.renderer.copy_ex(texture, None, destination_rectangle, degrees, None, false, false).unwrap();
+        self.renderer
+            .copy_ex(
+                texture,
+                None,
+                destination_rectangle,
+                degrees,
+                None,
+                false,
+                false,
+            )
+            .unwrap();
     }
 }

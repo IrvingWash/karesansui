@@ -1,10 +1,12 @@
 use application::Application;
 
 mod application;
-mod renderer;
+mod canvas;
 
 fn main() {
     let mut app = Application::new();
+
+    app.init();
 
     while app.is_running() {
         app.input();
