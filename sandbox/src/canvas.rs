@@ -32,6 +32,7 @@ impl Canvas {
                 window_width.try_into().unwrap(),
                 window_height.try_into().unwrap(),
             )
+            .metal_view()
             .fullscreen_desktop()
             .build()
             .unwrap();
