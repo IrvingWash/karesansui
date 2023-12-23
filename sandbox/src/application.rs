@@ -1,4 +1,5 @@
 use sdl2::{event::Event, keyboard::Keycode, pixels::Color};
+use karesansui::{particle::Particle, vector3::Vector3};
 
 use crate::canvas::Canvas;
 
@@ -6,6 +7,7 @@ const FPS: u64 = 60;
 const MILLISECONDS_PER_FRAME: u64 = 1000 / FPS;
 
 pub struct Application {
+    particles: Vec<Particle>,
     is_running: bool,
     canvas: Canvas,
     time_previous_frame: u64,
@@ -16,6 +18,7 @@ impl Application {
         let canvas = Canvas::open_window();
 
         Application {
+            particles: vec![],
             is_running: false,
             canvas,
             time_previous_frame: 0,
@@ -24,6 +27,12 @@ impl Application {
 
     pub fn init(&mut self) {
         self.is_running = true;
+
+        let mut particle = Particle::zero();
+
+        particle.set_velocity(Vector3::from(50_f64, 10_f64, 0_f64));
+
+        self.particles.push(particle);
     }
 
     pub fn is_running(&self) -> bool {
@@ -48,14 +57,16 @@ impl Application {
     pub fn update(&mut self) {
         let delta_time = self.sleep_and_calculate_delta_time();
 
-        println!("{}", delta_time);
+        self.particles[0].integrate(delta_time);
     }
 
     pub fn render(&mut self) {
-        self.canvas.clear_screen(Color::RGB(50, 50, 50));
+        self.canvas.clear_screen(Color::RGB(100, 100, 100));
+
+        let position = &self.particles[0].position;
 
         self.canvas
-            .draw_filled_circle(100, 100, 100, Color::RGB(0, 0, 180));
+            .draw_filled_circle(position.x as i16, position.y as i16, 50, Color::RGB(0, 0, 180));
 
         self.canvas.render_frame();
     }
